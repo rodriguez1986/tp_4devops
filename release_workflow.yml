@@ -29,4 +29,14 @@ jobs:
           git push origin ${{steps.get_next_version.outputs.version}}
       
 
-      
+      -name: Log in Docker Hub
+       uses: docker/login-action@v3
+       with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      -name: Build the Docker Image
+       run: docker build. --file Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/tp_4devops:<app-tag>
+
+       -name: Docker Push
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/tp_4devops:<app-tag>
