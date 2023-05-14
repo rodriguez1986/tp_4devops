@@ -1,0 +1,37 @@
+name: go releaser
+
+on:
+  push:
+    # run only against tags
+    tags:
+      - "*"
+
+permissions:
+  contents: write
+  # packages: write
+  # issues: write
+
+jobs:
+  go releaser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - run: git fetch --force --tags
+      - uses: actions/setup-go@v4
+        with:
+          go-version: stable
+      # More assembly might be required: Docker logins, GPG, etc. It all depends
+      # on your needs.
+      - uses: go releaser/go releaser-action@v4
+        with:
+          # either 'go releaser' (default) or 'go releaser-pro':
+          distribution: go releaser
+          version: latest
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Your GoReleaser Pro key, if you are using the 'go releaser-pro'
+          # distribution:
+          # GO RELEASER_KEY: ${{ secrets.GO RELEASER_KEY }}

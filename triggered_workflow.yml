@@ -1,0 +1,29 @@
+name: Create new tag on push on main branch
+
+on:
+  push:
+    branches:
+      - 'main'
+
+permissions:
+  contents: write
+
+jobs:
+  create-new-tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get next version # checks if conventional commit would cause a new version
+        id: get_next_version
+        uses: thenativeweb/get-next-version@2.5.0
+
+      - name: Create new tag
+        if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
+        run: |
+          git tag ${{steps.get_next_version.outputs.version}}
+          git push origin ${{steps.get_next_version.outputs.version}}
