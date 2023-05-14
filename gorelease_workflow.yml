@@ -21,17 +21,15 @@ jobs:
       - run: git fetch --force --tags
       - uses: actions/setup-go@v4
         with:
-          go-version: stable
+          go-version: ["1.17", "1.18","1.19"]
       # More assembly might be required: Docker logins, GPG, etc. It all depends
       # on your needs.
       - uses: go releaser/go releaser-action@v4
         with:
-          # either 'go releaser' (default) or 'go releaser-pro':
+          # either 'go releaser' (default):
           distribution: go releaser
           version: latest
           args: release --clean
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Your GoReleaser Pro key, if you are using the 'go releaser-pro'
-          # distribution:
-          # GO RELEASER_KEY: ${{ secrets.GO RELEASER_KEY }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
