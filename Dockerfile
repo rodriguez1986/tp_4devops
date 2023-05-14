@@ -13,9 +13,11 @@ ADD . /app
 ## directory
 WORKDIR /app
 
+# Copy everything from the current directory to the Working Directory inside the container
+COPY . .
 ## we run go build to compile the binary
 ## executable of our Go program
-#RUN go build -o main .
+RUN go build -o main .
 ## Our start command which kicks off
 ## our newly created binary executable
 CMD ["/app/main"]
